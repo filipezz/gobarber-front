@@ -1,0 +1,49 @@
+import React from 'react';
+
+import { Form, Input } from '@rocketseat/unform';
+import { useSelector, useDispatch } from 'react-redux';
+import AvatarInput from './AvatarInput';
+import { Container } from './styles';
+
+import { signOut } from '../../store/modules/auth/actions';
+import { updateProfileRequest } from '../../store/modules/user/actions';
+
+export default function Profile() {
+  const dispatch = useDispatch();
+  const profile = useSelector((state) => state.user.profile);
+
+  function handleSubmit(data) {
+    dispatch(updateProfileRequest(data));
+  }
+  function handleSignOut() {
+    dispatch(signOut());
+  }
+  return (
+    <Container>
+      <Form initialData={profile} onSubmit={handleSubmit}>
+        <AvatarInput name="avatar_id" />
+        <Input name="name" placeholder="Nome completo" />
+        <Input name="email" placeholder="Seu email" />
+
+        <hr />
+        <Input
+          name="oldPassword"
+          type="password"
+          placeholder="Sua senha atual"
+        />
+        <Input
+          name="confirmPassword"
+          type="password"
+          placeholder="Nova senha"
+        />
+        <Input name="password" type="password" placeholder="Confirmar senha" />
+
+        <button type="submit">Atualizar perfil</button>
+      </Form>
+
+      <button onClick={handleSignOut} type="button">
+        Sair do GoBarber
+      </button>
+    </Container>
+  );
+}
